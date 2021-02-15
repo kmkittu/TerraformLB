@@ -80,6 +80,24 @@ Open the navigation menu, under Identity you can find compartments. Click that. 
 
 ![Compartment](https://github.com/kmkittu/TerraformLB/blob/main/Compartment%20OCID.png)
 
-Some additional credentials might be required based on requirement like Vault OCID, Key OCID, Management Endpoint, Crypto Endpoint. 
 
+The basic values can be specified searately in terraform.tfvars file like below
+### Example:
+
+        #tenancy and user information
+        tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaalxltbjsgjhukykkd6trlxdfbwjuulnavxqehvv3crknt7ewhlpa"
+        user_ocid = "ocid1.user.oc1..aaaaaaaaqidqcqnx6mfprmzt2nn6xudu3t4pgj4bbqlk23axlr4abbjbfyja"
+        fingerprint= "bf:0a:e6:c7:9c:93:d2:84:87:94:4f:fc:d4:24:ec:c1"
+        private_key_path = "/root/hol/oci_key.pem"
+
+
+        # Region
+        region = "us-ashburn-1"
+
+        # Compartment
+        compartment_ocid = "ocid1.compartment.oc1..aaaaaaaacd43nqpjqwl2tgg7rq5ysabiyxedffdfdhhghgq7swk426b5hnflyvpq"
+
+
+Otherwise it can be included in the terraform resource file.
+Download the attached script 
 
