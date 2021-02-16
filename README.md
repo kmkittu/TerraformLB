@@ -104,166 +104,166 @@ The extracted Zip file has instance.tf which has the terraform script for creati
 We have terraform.tfvars and instance.tf files in the same folder and we have already installed Terraform in the local system. Its time to start the execution part.
 Execute command “terraform init”.  The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration. It is safe to run this command multiple times. It will initialize backed; Install necessary oci provider in the directory and also provide information about deprecated parameters seen in the terraform code.
 ### Example
-# terraform init
-Initializing the backend...
-Initializing provider plugins...
-- Reusing previous version of hashicorp/oci from the dependency lock file
-- Installing hashicorp/oci v4.11.0...
-- Installed hashicorp/oci v4.11.0 (signed by HashiCorp)
-Terraform has been successfully initialized!
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
+        # terraform init
+        Initializing the backend...
+        Initializing provider plugins...
+        - Reusing previous version of hashicorp/oci from the dependency lock file
+        - Installing hashicorp/oci v4.11.0...
+        - Installed hashicorp/oci v4.11.0 (signed by HashiCorp)
+        Terraform has been successfully initialized!
+        You may now begin working with Terraform. Try running "terraform plan" to see
+        any changes that are required for your infrastructure. All Terraform commands
+        should now work.
+        If you ever set or change modules or backend configuration for Terraform,
+        rerun this command to reinitialize your working directory. If you forget, other
+        commands will detect it and remind you to do so if necessary.
 
 Its time to execute “terraform plan” command.  The terraform plan command is used to create an execution plan. Terraform performs a refresh, unless explicitly disabled, and then determines what actions are necessary to achieve the desired state specified in the configuration files. This command is a convenient way to check whether the execution plan for a set of changes matches your expectations without making any changes to real resources or to the state.
 It will show the list of Cloud resources to be created. That information gives an idea of what this terraform script tries to achieve.
 ### Example
 # terraform plan -out instance.out
 
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
-Terraform will perform the following actions:
-  # oci_core_instance.instance1 will be created
-  + resource "oci_core_instance" "instance1" {
-      + availability_domain                 = "LxbT:AP-MUMBAI-1-AD-1"
-      + boot_volume_id                      = (known after apply).
-.
-.
-.
-This plan was saved to: instance.out
+        An execution plan has been generated and is shown below.
+        Resource actions are indicated with the following symbols:
+        + create
+        Terraform will perform the following actions:
+        # oci_core_instance.instance1 will be created
+        + resource "oci_core_instance" "instance1" {
+            + availability_domain                 = "LxbT:AP-MUMBAI-1-AD-1"
+            + boot_volume_id                      = (known after apply).
+        .
+        .
+        .
+        This plan was saved to: instance.out
 
-To perform exactly these actions, run the following command to apply:
-    terraform apply "instance.out"
+        To perform exactly these actions, run the following command to apply:
+            terraform apply "instance.out"
 
 You can refer the full output of plan command in the attached instanct.out file. In case any errors are thrown as part of Plan execution, that has to be addressed first before proceeding to execution.
 4) Execute the code through Terraform apply command
 The terraform apply command is used to apply the changes required to reach the desired state of the configuration. The apply command will refer all the terraform scripts in the current folder and execute it in the appropriate order. Terraform knows which resource should be created first and it follows the predetermined order for resource creation. That’s where Terraform succeeds than Ansible. 
 
 
-[root@terraform 5.w]# terraform apply -auto-approve
-oci_core_vcn.vcn1: Creating...
-oci_core_public_ip.test_reserved_ip: Creating...
-oci_core_public_ip.test_reserved_ip: Creation complete after 0s [id=ocid1.publicip.oc1.ap-mumbai-1.amaaaaaaulymzmianfxwrxqzlpkitizgzogiekbeogsfuldvvwenepymy7xq]
-oci_core_vcn.vcn1: Creation complete after 0s [id=ocid1.vcn.oc1.ap-mumbai-1.amaaaaaaulymzmiacgejgo3r5fbgq6rlmgss4yzqjeqiysqwtil723dkauba]
-oci_core_internet_gateway.internetgateway1: Creating...
-oci_core_security_list.securitylist1: Creating...
-oci_core_security_list.securitylist1: Creation complete after 1s [id=ocid1.securitylist.oc1.ap-mumbai-1.aaaaaaaa2f7pbpn7k4egbdsoc4k6ocadnunatzakhgap5eovpcn5jixuwzra]
-oci_core_internet_gateway.internetgateway1: Creation complete after 1s [id=ocid1.internetgateway.oc1.ap-mumbai-1.aaaaaaaa57drr3gz4zo6gvfm4xrdym26r664xmz2zv5f63ogl54dmck543fq]
-oci_core_route_table.routetable1: Creating...
-oci_core_route_table.routetable1: Creation complete after 0s [id=ocid1.routetable.oc1.ap-mumbai-1.aaaaaaaab3bdjhidevnqyut5ei52353dg3wkgtmev5t73uxthrzy6u7ojqoq]
-oci_core_subnet.subnet2: Creating...
-oci_core_subnet.subnet1: Creating...
-oci_core_subnet.subnet2: Provisioning with 'local-exec'...
-oci_core_subnet.subnet2 (local-exec): Executing: ["/bin/sh" "-c" "sleep 5"]
-oci_core_subnet.subnet1: Provisioning with 'local-exec'...
-oci_core_subnet.subnet1 (local-exec): Executing: ["/bin/sh" "-c" "sleep 5"]
-oci_core_subnet.subnet2: Creation complete after 10s [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaauhjqv2bnc4dem6bd6sa4ip2s3gw5yepwl6vosuu4opqh7bsgydfq]
-oci_core_instance.instance2: Creating...
-oci_core_subnet.subnet1: Still creating... [10s elapsed]
-oci_core_subnet.subnet1: Creation complete after 12s [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaa3ksq2zrgzouruxbbqfmv5brrsb6s3wcyagpq4vvglfj2vnyzck3q]
-oci_load_balancer.lb1: Creating...
-oci_core_instance.instance1: Creating...
-oci_core_instance.instance2: Still creating... [10s elapsed]
-oci_load_balancer.lb1: Still creating... [10s elapsed]
-oci_core_instance.instance1: Still creating... [10s elapsed]
-oci_core_instance.instance2: Still creating... [20s elapsed]
-oci_core_instance.instance1: Still creating... [20s elapsed]
-oci_load_balancer.lb1: Still creating... [20s elapsed]
-oci_core_instance.instance2: Still creating... [30s elapsed]
-oci_load_balancer.lb1: Still creating... [30s elapsed]
-oci_core_instance.instance1: Still creating... [30s elapsed]
-oci_core_instance.instance2: Still creating... [40s elapsed]
-oci_core_instance.instance1: Still creating... [40s elapsed]
-oci_load_balancer.lb1: Still creating... [40s elapsed]
-oci_load_balancer.lb1: Creation complete after 44s [id=ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a]
-oci_load_balancer_hostname.test_hostname2: Creating...
-oci_load_balancer_hostname.test_hostname1: Creating...
-oci_load_balancer_backend_set.lb-bes1: Creating...
-oci_core_instance.instance2: Still creating... [50s elapsed]
-oci_core_instance.instance1: Still creating... [50s elapsed]
-oci_load_balancer_hostname.test_hostname2: Still creating... [10s elapsed]
-oci_load_balancer_hostname.test_hostname1: Still creating... [10s elapsed]
-oci_load_balancer_backend_set.lb-bes1: Still creating... [10s elapsed]
-oci_core_instance.instance2: Still creating... [1m0s elapsed]
-oci_load_balancer_hostname.test_hostname1: Creation complete after 14s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/hostnames/hostname1]
-oci_core_instance.instance1: Still creating... [1m0s elapsed]
-oci_load_balancer_hostname.test_hostname2: Still creating... [20s elapsed]
-oci_load_balancer_backend_set.lb-bes1: Still creating... [20s elapsed]
-oci_core_instance.instance1: Creation complete after 1m6s [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrulymzmicooxhugcxc6d3qkkcqrlttdjt5slydk6hionjhpoj474a]
-oci_core_instance.instance2: Still creating... [1m10s elapsed]
-oci_load_balancer_hostname.test_hostname2: Still creating... [30s elapsed]
-oci_load_balancer_backend_set.lb-bes1: Still creating... [30s elapsed]
-oci_core_instance.instance2: Creation complete after 1m18s [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrulymzmictsllnz3wtdgah5m3xkuegin5xfias5nq3mzoj34stguq]
-oci_load_balancer_hostname.test_hostname2: Creation complete after 34s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/hostnames/hostname2]
-oci_load_balancer_backend_set.lb-bes1: Still creating... [40s elapsed]
-oci_load_balancer_backend_set.lb-bes1: Still creating... [50s elapsed]
-oci_load_balancer_backend_set.lb-bes1: Creation complete after 54s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1]
-oci_load_balancer_backend.lb-be2: Creating...
-oci_load_balancer_backend.lb-be1: Creating...
-oci_load_balancer_listener.lb-listener1: Creating...
-oci_load_balancer_backend.lb-be1: Still creating... [10s elapsed]
-oci_load_balancer_backend.lb-be2: Still creating... [10s elapsed]
-oci_load_balancer_listener.lb-listener1: Still creating... [10s elapsed]
-oci_load_balancer_backend.lb-be1: Still creating... [20s elapsed]
-oci_load_balancer_backend.lb-be2: Still creating... [20s elapsed]
-oci_load_balancer_listener.lb-listener1: Still creating... [20s elapsed]
-oci_load_balancer_backend.lb-be1: Still creating... [30s elapsed]
-oci_load_balancer_backend.lb-be2: Still creating... [30s elapsed]
-oci_load_balancer_listener.lb-listener1: Still creating... [30s elapsed]
-oci_load_balancer_backend.lb-be2: Creation complete after 34s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1/backends/10.1.21.2:80]
-oci_load_balancer_backend.lb-be1: Still creating... [40s elapsed]
-oci_load_balancer_listener.lb-listener1: Still creating... [40s elapsed]
-oci_load_balancer_backend.lb-be1: Still creating... [50s elapsed]
-oci_load_balancer_listener.lb-listener1: Still creating... [50s elapsed]
-oci_load_balancer_listener.lb-listener1: Creation complete after 54s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/listeners/http]
-oci_load_balancer_backend.lb-be1: Still creating... [1m0s elapsed]
-oci_load_balancer_backend.lb-be1: Creation complete after 1m7s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1/backends/10.1.20.2:80]
+        [root@terraform 5.w]# terraform apply -auto-approve
+        oci_core_vcn.vcn1: Creating...
+        oci_core_public_ip.test_reserved_ip: Creating...
+        oci_core_public_ip.test_reserved_ip: Creation complete after 0s [id=ocid1.publicip.oc1.ap-mumbai-1.amaaaaaaulymzmianfxwrxqzlpkitizgzogiekbeogsfuldvvwenepymy7xq]
+        oci_core_vcn.vcn1: Creation complete after 0s [id=ocid1.vcn.oc1.ap-mumbai-1.amaaaaaaulymzmiacgejgo3r5fbgq6rlmgss4yzqjeqiysqwtil723dkauba]
+        oci_core_internet_gateway.internetgateway1: Creating...
+        oci_core_security_list.securitylist1: Creating...
+        oci_core_security_list.securitylist1: Creation complete after 1s [id=ocid1.securitylist.oc1.ap-mumbai-1.aaaaaaaa2f7pbpn7k4egbdsoc4k6ocadnunatzakhgap5eovpcn5jixuwzra]
+        oci_core_internet_gateway.internetgateway1: Creation complete after 1s [id=ocid1.internetgateway.oc1.ap-mumbai-1.aaaaaaaa57drr3gz4zo6gvfm4xrdym26r664xmz2zv5f63ogl54dmck543fq]
+        oci_core_route_table.routetable1: Creating...
+        oci_core_route_table.routetable1: Creation complete after 0s [id=ocid1.routetable.oc1.ap-mumbai-1.aaaaaaaab3bdjhidevnqyut5ei52353dg3wkgtmev5t73uxthrzy6u7ojqoq]
+        oci_core_subnet.subnet2: Creating...
+        oci_core_subnet.subnet1: Creating...
+        oci_core_subnet.subnet2: Provisioning with 'local-exec'...
+        oci_core_subnet.subnet2 (local-exec): Executing: ["/bin/sh" "-c" "sleep 5"]
+        oci_core_subnet.subnet1: Provisioning with 'local-exec'...
+        oci_core_subnet.subnet1 (local-exec): Executing: ["/bin/sh" "-c" "sleep 5"]
+        oci_core_subnet.subnet2: Creation complete after 10s [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaauhjqv2bnc4dem6bd6sa4ip2s3gw5yepwl6vosuu4opqh7bsgydfq]
+        oci_core_instance.instance2: Creating...
+        oci_core_subnet.subnet1: Still creating... [10s elapsed]
+        oci_core_subnet.subnet1: Creation complete after 12s [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaa3ksq2zrgzouruxbbqfmv5brrsb6s3wcyagpq4vvglfj2vnyzck3q]
+        oci_load_balancer.lb1: Creating...
+        oci_core_instance.instance1: Creating...
+        oci_core_instance.instance2: Still creating... [10s elapsed]
+        oci_load_balancer.lb1: Still creating... [10s elapsed]
+        oci_core_instance.instance1: Still creating... [10s elapsed]
+        oci_core_instance.instance2: Still creating... [20s elapsed]
+        oci_core_instance.instance1: Still creating... [20s elapsed]
+        oci_load_balancer.lb1: Still creating... [20s elapsed]
+        oci_core_instance.instance2: Still creating... [30s elapsed]
+        oci_load_balancer.lb1: Still creating... [30s elapsed]
+        oci_core_instance.instance1: Still creating... [30s elapsed]
+        oci_core_instance.instance2: Still creating... [40s elapsed]
+        oci_core_instance.instance1: Still creating... [40s elapsed]
+        oci_load_balancer.lb1: Still creating... [40s elapsed]
+        oci_load_balancer.lb1: Creation complete after 44s [id=ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a]
+        oci_load_balancer_hostname.test_hostname2: Creating...
+        oci_load_balancer_hostname.test_hostname1: Creating...
+        oci_load_balancer_backend_set.lb-bes1: Creating...
+        oci_core_instance.instance2: Still creating... [50s elapsed]
+        oci_core_instance.instance1: Still creating... [50s elapsed]
+        oci_load_balancer_hostname.test_hostname2: Still creating... [10s elapsed]
+        oci_load_balancer_hostname.test_hostname1: Still creating... [10s elapsed]
+        oci_load_balancer_backend_set.lb-bes1: Still creating... [10s elapsed]
+        oci_core_instance.instance2: Still creating... [1m0s elapsed]
+        oci_load_balancer_hostname.test_hostname1: Creation complete after 14s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/hostnames/hostname1]
+        oci_core_instance.instance1: Still creating... [1m0s elapsed]
+        oci_load_balancer_hostname.test_hostname2: Still creating... [20s elapsed]
+        oci_load_balancer_backend_set.lb-bes1: Still creating... [20s elapsed]
+        oci_core_instance.instance1: Creation complete after 1m6s [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrulymzmicooxhugcxc6d3qkkcqrlttdjt5slydk6hionjhpoj474a]
+        oci_core_instance.instance2: Still creating... [1m10s elapsed]
+        oci_load_balancer_hostname.test_hostname2: Still creating... [30s elapsed]
+        oci_load_balancer_backend_set.lb-bes1: Still creating... [30s elapsed]
+        oci_core_instance.instance2: Creation complete after 1m18s [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrulymzmictsllnz3wtdgah5m3xkuegin5xfias5nq3mzoj34stguq]
+        oci_load_balancer_hostname.test_hostname2: Creation complete after 34s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/hostnames/hostname2]
+        oci_load_balancer_backend_set.lb-bes1: Still creating... [40s elapsed]
+        oci_load_balancer_backend_set.lb-bes1: Still creating... [50s elapsed]
+        oci_load_balancer_backend_set.lb-bes1: Creation complete after 54s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1]
+        oci_load_balancer_backend.lb-be2: Creating...
+        oci_load_balancer_backend.lb-be1: Creating...
+        oci_load_balancer_listener.lb-listener1: Creating...
+        oci_load_balancer_backend.lb-be1: Still creating... [10s elapsed]
+        oci_load_balancer_backend.lb-be2: Still creating... [10s elapsed]
+        oci_load_balancer_listener.lb-listener1: Still creating... [10s elapsed]
+        oci_load_balancer_backend.lb-be1: Still creating... [20s elapsed]
+        oci_load_balancer_backend.lb-be2: Still creating... [20s elapsed]
+        oci_load_balancer_listener.lb-listener1: Still creating... [20s elapsed]
+        oci_load_balancer_backend.lb-be1: Still creating... [30s elapsed]
+        oci_load_balancer_backend.lb-be2: Still creating... [30s elapsed]
+        oci_load_balancer_listener.lb-listener1: Still creating... [30s elapsed]
+        oci_load_balancer_backend.lb-be2: Creation complete after 34s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1/backends/10.1.21.2:80]
+        oci_load_balancer_backend.lb-be1: Still creating... [40s elapsed]
+        oci_load_balancer_listener.lb-listener1: Still creating... [40s elapsed]
+        oci_load_balancer_backend.lb-be1: Still creating... [50s elapsed]
+        oci_load_balancer_listener.lb-listener1: Still creating... [50s elapsed]
+        oci_load_balancer_listener.lb-listener1: Creation complete after 54s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/listeners/http]
+        oci_load_balancer_backend.lb-be1: Still creating... [1m0s elapsed]
+        oci_load_balancer_backend.lb-be1: Creation complete after 1m7s [id=loadBalancers/ocid1.loadbalancer.oc1.ap-mumbai-1.aaaaaaaarh3c4ass3fwrwp676hobwftb44soqms5el72w43sthzr6qy2s24a/backendSets/lb-bes1/backends/10.1.20.2:80]
 
-Warning: Value for undeclared variable
+        Warning: Value for undeclared variable
 
-The root module does not declare a variable named "vcn_display_name" but a
-value was found in file "terraform.tfvars". To use this value, add a
-"variable" block to the configuration.
+        The root module does not declare a variable named "vcn_display_name" but a
+        value was found in file "terraform.tfvars". To use this value, add a
+        "variable" block to the configuration.
 
-Using a variables file to set an undeclared variable is deprecated and will
-become an error in a future release. If you wish to provide certain "global"
-settings to all configurations in your organization, use TF_VAR_...
-environment variables to set these instead.
-
-
-Warning: Value for undeclared variable
-
-The root module does not declare a variable named "vcn_cidr" but a value was
-found in file "terraform.tfvars". To use this value, add a "variable" block to
-the configuration.
-
-Using a variables file to set an undeclared variable is deprecated and will
-become an error in a future release. If you wish to provide certain "global"
-settings to all configurations in your organization, use TF_VAR_...
-environment variables to set these instead.
+        Using a variables file to set an undeclared variable is deprecated and will
+        become an error in a future release. If you wish to provide certain "global"
+        settings to all configurations in your organization, use TF_VAR_...
+        environment variables to set these instead.
 
 
-Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+        Warning: Value for undeclared variable
 
-Outputs:
+        The root module does not declare a variable named "vcn_cidr" but a value was
+        found in file "terraform.tfvars". To use this value, add a "variable" block to
+        the configuration.
 
-lb_public_ip = [
-  tolist([
-    {
-      "ip_address" = "152.67.31.57"
-      "is_public" = true
-      "reserved_ip" = tolist([
-        {
-          "id" = "ocid1.publicip.oc1.ap-mumbai-1.amaaaaaaulymzmianfxwrxqzlpkitizgzogiekbeogsfuldvvwenepymy7xq"
-        },
-      ])
-    },
-  ]),
-]
+        Using a variables file to set an undeclared variable is deprecated and will
+        become an error in a future release. If you wish to provide certain "global"
+        settings to all configurations in your organization, use TF_VAR_...
+        environment variables to set these instead.
+
+
+        Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+
+        Outputs:
+
+        lb_public_ip = [
+        tolist([
+            {
+            "ip_address" = "152.67.31.57"
+            "is_public" = true
+            "reserved_ip" = tolist([
+                {
+                "id" = "ocid1.publicip.oc1.ap-mumbai-1.amaaaaaaulymzmianfxwrxqzlpkitizgzogiekbeogsfuldvvwenepymy7xq"
+                },
+            ])
+            },
+        ]),
+        ]
 
 
 
