@@ -96,10 +96,13 @@ Open the navigation menu, under Identity you can find compartments. Click that. 
         # Compartment
         compartment_ocid = "ocid1.compartment.oc1..aaaaaaaacd43nqpjqwl2tgg7rq5ysabiyxedffdfdhhghgq7swk426b5hnflyvpq"
 
-Instead of separate terraform.tfvars file we could specify these values directly in the main terraform files..
+Private_key_path refers where we have kept private key to login into OCI portal.
+
+Instead of separate terraform.tfvars file we could specify these values directly in the main terraform files. 
 
 ###2) Create the Terraform script  for OCI resources
-The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed.
+The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed. In this workshop we cover all the above attributes in the instance.tf file.
+
 3) Check the code integrity through Terraform plan command
 We have terraform.tfvars and instance.tf files in the same folder and we have already installed Terraform in the local system. Its time to start the execution part.
 Execute command “terraform init”.  The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration. It is safe to run this command multiple times. It will initialize backed; Install necessary oci provider in the directory and also provide information about deprecated parameters seen in the terraform code.
@@ -265,6 +268,31 @@ The terraform apply command is used to apply the changes required to reach the d
         ]),
         ]
 
+Terraform scrip exectuion is completed. We could verify the resource creation through web portal.
+Login into OCI cloud portal and Click Compute -> Instances
+![Instances](https://github.com/kmkittu/TerraformLB/blob/main/Instances%20page.png)
 
+The page shows 2 compute instances are created and Web server has been installed in those server.
+Lets verify the Web server page.
+
+Ping first web server IP
+![second web server](https://github.com/kmkittu/TerraformLB/blob/main/Second%20webserver.png)
+
+We could see the server name in the first line. Lets ping second web server IP.
+
+![First web server](https://github.com/kmkittu/TerraformLB/blob/main/First%20web%20server.png)
+
+The first line shows the web server name. As we know we have covered Both the compute instances via Load balancers. Verify that Load balancer is created by Terraform script execution.
+
+![LBR](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers.png)
+
+As Load balancer is managing both the web servers, the traffic to Load balancer will be forwarded to one of the webserver. Lets test it.
+![LBR1](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers1.png)
+
+We have invoked Load balancers IP, it has forwarded to one of the web server. As per the setup the subsequent attempts to transfer to another web server. Lets test it by refreshing the browser.
+
+![LBR2](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers2.png)
+
+We could see it has forwarded to another web server.
 
 
