@@ -272,7 +272,7 @@ Terraform scrip exectuion is completed. We could verify the resource creation th
 Lets verify one by one. 
 Login into OCI cloud portal and Click Networking -> Virtual Cloud Networks
 
-![VCN] (https://github.com/kmkittu/TerraformLB/blob/main/VCN.png)
+![VCNn](https://github.com/kmkittu/TerraformLB/blob/main/VCN.png)
 
 Verify that Load balancer is created by Terraform script execution. Click Networking -> Load balancers
 
