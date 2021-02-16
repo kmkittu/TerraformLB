@@ -105,6 +105,26 @@ Instead of separate terraform.tfvars file we could specify these values directly
 ### 2) Create the Terraform script  for OCI resources
 The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed. In this workshop we cover all the above attributes in the instance.tf file.
 
+Edit the instance.tf file and modify the below lines with above attributes.
+variable "tenancy_ocid" {
+default = "ocid1.tenancy.oc1..aaaaaaaaasqft24cgqwb6lsyij3kmp4nsoiwyn5mboi23mzxywgppre2m6cq"
+}
+variable "user_ocid" {
+default = "ocid1.user.oc1..aaaaaaaan6dokkau7zyiemiggmkht2vvkvhgij3usqnhms5jvddm6h6tbfza"
+}
+variable "fingerprint" {
+default = "2f:80:77:4c:30:8c:5c:e7:d9:94:68:f3:db:3a:ab:25"
+}
+variable "private_key_path" {
+default = "/root/.oci/oci_api_key.pem"  ===> Private key for OCI login credentials
+}
+variable "compartment_ocid" {
+default = "ocid1.compartment.oc1..aaaaaaaa4cffiat2knvzy4bjs7eprhns5qspej5pfcelkfvrb7s5vahgr4yq"
+}
+variable "region" {
+default = "ap-mumbai-1"
+}
+
 ### 3) Check the code integrity through Terraform plan command
 We have terraform.tfvars and instance.tf files in the same folder and we have already installed Terraform in the local system. Its time to start the execution part.
 Execute command “terraform init”.  The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration. It is safe to run this command multiple times. It will initialize backed; Install necessary oci provider in the directory and also provide information about deprecated parameters seen in the terraform code.
