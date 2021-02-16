@@ -269,27 +269,35 @@ The terraform apply command is used to apply the changes required to reach the d
         ]
 
 Terraform scrip exectuion is completed. We could verify the resource creation through web portal.
-Login into OCI cloud portal and Click Compute -> Instances
+Lets verify one by one. 
+Login into OCI cloud portal and Click Networking -> Virtual Cloud Networks
+
+![VCN]https://github.com/kmkittu/TerraformLB/blob/main/VCN.png)
+
+Verify that Load balancer is created by Terraform script execution. Click Networking -> Load balancers
+
+![LBR](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers.png)
+
+Click Compute -> Instances
+
 ![Instances](https://github.com/kmkittu/TerraformLB/blob/main/Instances%20page.png)
 
 The page shows 2 compute instances are created and Web server has been installed in those server.
 Lets verify the Web server page.
 
 Ping first web server IP
+
 ![second web server](https://github.com/kmkittu/TerraformLB/blob/main/Second%20webserver.png)
 
 We could see the server name in the first line. Lets ping second web server IP.
 
 ![First web server](https://github.com/kmkittu/TerraformLB/blob/main/First%20web%20server.png)
 
-The first line shows the web server name. As we know we have covered Both the compute instances via Load balancers. Verify that Load balancer is created by Terraform script execution.
+The first line shows the second web server name. As we know we have covered Both the compute instances via Load balancers and the traffic to Load balancer will be forwarded to one of the webserver. Lets test it.
 
-![LBR](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers.png)
-
-As Load balancer is managing both the web servers, the traffic to Load balancer will be forwarded to one of the webserver. Lets test it.
 ![LBR1](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers1.png)
 
-We have invoked Load balancers IP, it has forwarded to one of the web server. As per the setup the subsequent attempts to transfer to another web server. Lets test it by refreshing the browser.
+We have invoked Load balancers IP, it has forwarded to one of the web server. As per the setup the subsequent attempts should transfer to another web server. Lets test it by refreshing the browser.
 
 ![LBR2](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers2.png)
 
