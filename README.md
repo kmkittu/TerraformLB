@@ -293,6 +293,5 @@ We have invoked Load balancers IP, it has forwarded to one of the web server. As
 
 ![LBR2](https://github.com/kmkittu/TerraformLB/blob/main/Load%20Balancers2.png)
 
-We could see it has forwarded to another web server.
-
+We could see it has forwarded to another web server. It concludes that Terraform script has created VCN and Two web servers managed by Load balancer.
 
