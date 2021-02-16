@@ -12,7 +12,7 @@ In this workshop we are going to configure basic Load balancer setup with Web se
 ## Prerequisites
 Oracle Cloud login credentials
 
-Download the attached script (Terraform.zip) available in this page. 
+Download the attached script (Terraform.zip - https://github.com/kmkittu/TerraformLB/blob/main/Terraform.zip ) available in this page. 
 Extract the zip file.
 
 ## Steps
