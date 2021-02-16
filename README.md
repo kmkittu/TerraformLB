@@ -12,6 +12,10 @@ In this workshop we are going to configure basic Load balancer setup with Web se
 ## Prerequisites
 Oracle Cloud login credentials
 
+
+Download the attached script (Terraform.zip) available in this page. 
+Extract the zip file.
+
 ## Steps
 1) Prepare Terraform setup files
 2) Create the Terraform code for OCI resources
@@ -21,8 +25,8 @@ Oracle Cloud login credentials
 Lets walk through each step in detail.
 
 ###1) Prepare Terraform setup files
-
-Remember we are going to create resources in cloud, for that first we need to specify OCI credentials to terraform for login into OCI. Lets first collect the basic credentials required to login, that are User OCID, Tenancy OCID, fingerprint, compartment OCID, region and Private key. 
+The downloaded zip file has terraform.tfvars. It has the basic credentials required to login, that are User OCID, Tenancy OCID, fingerprint, compartment OCID, region and Private key. Lets discuss how to collect those values. 
+Login into OCI cloud portal, thats the easy way to collect all the required attribute values.
 
 ### Tenancy OCID 
 Open the Profile menu (User menu icon)  and click Tenancy: <your_tenancy_name>.
@@ -43,8 +47,8 @@ The user OCID is shown under User Information. Click Copy to copy it to your cli
 ### Private key 
 SSH key pair is required to login into OCI console
 If SSH key pair is not created, then follow the below steps.
-
-    $ openssl genrsa -out oci_key.pem 2048 
+Login into any Linux machine and execute openssh command.
+    $ openssh genrsa -out oci_key.pem 2048 
     Generating RSA private key, 2048 bit long modulus
     ...................................................................................+++
     .....+++
@@ -57,7 +61,7 @@ If SSH key pair is not created, then follow the below steps.
 
 Generate Public Key with Pem(Privacy Enhanced Mail) format
 
-    [oracle@db key]$ openssl rsa -pubout -in oci_key.pem -out oci_key_public.pem
+    [oracle@db key]$ openssh rsa -pubout -in oci_key.pem -out oci_key_public.pem
     writing RSA key
     [oracle@db key]$ ls -lrt
     -rw-r--r-- 1 oracle oinstall 1679 Apr  3 07:35 oci_key.pem
@@ -81,7 +85,6 @@ Open the navigation menu, under Identity you can find compartments. Click that. 
 ![Compartment](https://github.com/kmkittu/TerraformLB/blob/main/Compartment%20OCID.png)
 
 
-The basic values can be specified searately in terraform.tfvars file like below
 ### Example:
 
         #tenancy and user information
@@ -98,6 +101,14 @@ The basic values can be specified searately in terraform.tfvars file like below
         compartment_ocid = "ocid1.compartment.oc1..aaaaaaaacd43nqpjqwl2tgg7rq5ysabiyxedffdfdhhghgq7swk426b5hnflyvpq"
 
 
-Otherwise it can be included in the terraform resource file.
-Download the attached script 
+Instead of separate terraform.tfvars file we could specify these values directly in the main terraform files.
+
+###2) Create the Terraform script  for OCI resources
+
+
+3) Check the code integrity through Terraform plan command
+4) Execute the code through Terraform apply command
+
+
+
 
