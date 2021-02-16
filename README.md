@@ -23,11 +23,11 @@ Extract the zip file.
 
 Lets walk through each step in detail.
 
-###1) Prepare Terraform setup files
+### 1) Prepare Terraform setup files
 The downloaded zip file has terraform.tfvars. It has the basic credentials required to login, that are User OCID, Tenancy OCID, fingerprint, compartment OCID, region and Private key. Lets discuss how to collect those values. 
 Login into OCI cloud portal, thats the easy way to collect all the required attribute values.
 
-### Tenancy OCID 
+#### Tenancy OCID 
 Open the Profile menu (User menu icon)  and click Tenancy: <your_tenancy_name>.
 The tenancy OCID is shown under Tenancy Information. Click Copy to copy it to your clipboard.
 
@@ -36,14 +36,14 @@ The tenancy OCID is shown under Tenancy Information. Click Copy to copy it to yo
 The tenancy OCID looks something like this
 ocid1.tenancy.oc1..<unique_ID>     (notice the word "tenancy" in it)
 
-### User OCID    
+#### User OCID    
 If you're signed in as the user to OCI console: Open the Profile menu (User menu icon)   and click User Settings.
 If you're an administrator doing this for another user: Open the navigation menu. Under Governance and Administration, go to Identity and click Users. Select the user from the list.
 The user OCID is shown under User Information. Click Copy to copy it to your clipboard.
 
 ![User OCID](https://github.com/kmkittu/TerraformLB/blob/main/User%20OCID.png)
 
-### Private key 
+#### Private key 
 SSH key pair is required to login into OCI console
 If SSH key pair is not created, then follow the below steps.
 Login into any Linux machine and execute openssh command.
@@ -66,7 +66,7 @@ Generate Public Key with Pem(Privacy Enhanced Mail) format
     -rw-r--r-- 1 oracle oinstall 1679 Apr  3 07:35 oci_key.pem
     -rw-r--r-- 1 oracle oinstall  451 Apr  3 07:40 oci_key_public.pem
 
-### Fingerprint   
+#### Fingerprint   
 You can get the key's fingerprint with the following OpenSSL command. If you're using Windows, you'll need to install Git Bash for Windows and run the command with that tool.
 
     openssl rsa -pubout -outform DER -in ~/.oci/oci_api_key.pem | openssl md5 -c
@@ -75,14 +75,14 @@ Also in other way when you upload the public key in the Console (In the user det
 
 ![Fingerprint](https://github.com/kmkittu/TerraformLB/blob/main/Add%20public%20Key%20-%20Fingerprint.png)
 
-### Region
+#### Region
 Region at which OCI account is associated. You can find this information in the console easily
 
-### Compartment OCID
+#### Compartment OCID
 Open the navigation menu, under Identity you can find compartments. Click that. It will list all the compartments available with the account. Choose the compartment on which we need to create instance. That will show the compartment details including OCID as shown in the picture.
 ![Compartment](https://github.com/kmkittu/TerraformLB/blob/main/Compartment%20OCID.png)
 
-### Example:
+#### Example:
 
         #tenancy and user information
         tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaalxltbjsgjhukykkd6trlxdfbwjuulnavxqehvv3crknt7ewhlpa"
@@ -100,13 +100,13 @@ Private_key_path refers where we have kept private key to login into OCI portal.
 
 Instead of separate terraform.tfvars file we could specify these values directly in the main terraform files. 
 
-###2) Create the Terraform script  for OCI resources
+### 2) Create the Terraform script  for OCI resources
 The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed. In this workshop we cover all the above attributes in the instance.tf file.
 
-3) Check the code integrity through Terraform plan command
+### 3) Check the code integrity through Terraform plan command
 We have terraform.tfvars and instance.tf files in the same folder and we have already installed Terraform in the local system. Its time to start the execution part.
 Execute command “terraform init”.  The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration. It is safe to run this command multiple times. It will initialize backed; Install necessary oci provider in the directory and also provide information about deprecated parameters seen in the terraform code.
-### Example
+#### Example
         # terraform init
         Initializing the backend...
         Initializing provider plugins...
@@ -123,8 +123,8 @@ Execute command “terraform init”.  The terraform init command is used to ini
 
 Its time to execute “terraform plan” command.  The terraform plan command is used to create an execution plan. Terraform performs a refresh, unless explicitly disabled, and then determines what actions are necessary to achieve the desired state specified in the configuration files. This command is a convenient way to check whether the execution plan for a set of changes matches your expectations without making any changes to real resources or to the state.
 It will show the list of Cloud resources to be created. That information gives an idea of what this terraform script tries to achieve.
-### Example
-# terraform plan -out instance.out
+#### Example
+         terraform plan -out instance.out
 
         An execution plan has been generated and is shown below.
         Resource actions are indicated with the following symbols:
