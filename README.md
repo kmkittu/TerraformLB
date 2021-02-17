@@ -26,8 +26,8 @@ Extract the zip file.
 Lets walk through each step in detail.
 
 ### 1) Prepare Terraform setup files
-The downloaded zip file has terraform.tfvars. It has the basic credentials required to login, that are User OCID, Tenancy OCID, fingerprint, compartment OCID, region and Private key. Lets discuss how to collect those values. 
-Login into OCI cloud portal, thats the easy way to collect all the required attribute values.
+First we need to collect basic details about about OCI account that are User OCID, Tenancy OCID, fingerprint, compartment OCID, region and Private key. Lets discuss how to collect those values. 
+Login into OCI cloud portal to collect all the required attribute values.
 
 #### Tenancy OCID 
 Open the Profile menu (User menu icon)  and click Tenancy: <your_tenancy_name>.
@@ -49,6 +49,7 @@ The user OCID is shown under User Information. Click Copy to copy it to your cli
 SSH key pair is required to login into OCI console
 If SSH key pair is not created, then follow the below steps.
 Login into any Linux machine and execute openssh command.
+
     $ openssh genrsa -out oci_key.pem 2048 
     Generating RSA private key, 2048 bit long modulus
     ...................................................................................+++
@@ -57,23 +58,37 @@ Login into any Linux machine and execute openssh command.
 
 -out denotes output location of the generated private key.  In the above example, oci_key.pem is the private key. 
 
-    [oracle@db key]$ ls -lrt
+    $ ls -lrt
     -rw-r--r-- 1 oracle oinstall 1679 Apr  3 07:35 oci_key.pem
 
 Generate Public Key with Pem(Privacy Enhanced Mail) format
 
-    [oracle@db key]$ openssh rsa -pubout -in oci_key.pem -out oci_key_public.pem
+    $ openssh rsa -pubout -in oci_key.pem -out oci_key_public.pem
     writing RSA key
     [oracle@db key]$ ls -lrt
     -rw-r--r-- 1 oracle oinstall 1679 Apr  3 07:35 oci_key.pem
     -rw-r--r-- 1 oracle oinstall  451 Apr  3 07:40 oci_key_public.pem
 
+Login into OCI cloud consile, click user settings. 
+
+![user settings ](https://github.com/kmkittu/TerraformLB/blob/main/user%20settings.png)
+
+In the page click API Key
+
+![api key](https://github.com/kmkittu/TerraformLB/blob/main/user%20settings.png)
+
+Click "Add API Key" button. Paste the oci_key_public.pem there.
+
+![api key button](https://github.com/kmkittu/TerraformLB/blob/main/user%20add%20public%20key.png)
+
+Now our public key become part of OCI. Once the key is added it will listed along with Fingerprint.
+
 #### Fingerprint   
-You can get the key's fingerprint with the following OpenSSL command. If you're using Windows, you'll need to install Git Bash for Windows and run the command with that tool.
+When you upload the public key in the Console (As you did in the user details page) , the fingerprint is also automatically displayed there. It looks something like this: 12:34:56:78:90:ab:cd:ef:12:34:56:78:90:ab:cd:ef
 
-    openssl rsa -pubout -outform DER -in ~/.oci/oci_api_key.pem | openssl md5 -c
+You can also get the key's fingerprint with the following OpenSSL command. If you're using Windows, you'll need to install Git Bash for Windows and run the command with that tool.
 
-Also in other way when you upload the public key in the Console (In the user details page) , the fingerprint is also automatically displayed there. It looks something like this: 12:34:56:78:90:ab:cd:ef:12:34:56:78:90:ab:cd:ef
+    openssl rsa -pubout -outform DER -in oci_key_public.pem | openssl md5 -c
 
 ![Fingerprint](https://github.com/kmkittu/TerraformLB/blob/main/Add%20public%20Key%20-%20Fingerprint.png)
 
