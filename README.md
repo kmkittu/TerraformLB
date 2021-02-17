@@ -92,6 +92,37 @@ You can also get the key's fingerprint with the following OpenSSL command. If yo
 
 ![Fingerprint](https://github.com/kmkittu/TerraformLB/blob/main/Add%20public%20Key%20-%20Fingerprint.png)
 
+### SSH public key pair
+
+Create another set of SSH public key pair. This key will be used for compute instance SSH access. We will be specifying public key will creating the instance. Private key will be specified while connecting to the instance.
+
+        # ssh-keygen
+        Generating public/private rsa key pair.
+        Enter file in which to save the key (/root/.ssh/id_rsa):
+        Enter passphrase (empty for no passphrase):
+        Enter same passphrase again:
+        Your identification has been saved in /root/.ssh/id_rsa.
+        Your public key has been saved in /root/.ssh/id_rsa.pub.
+        The key fingerprint is:
+        SHA256:2rVDTujOKBMWspEdFCKg8/omlPVhFOYRsZ/T+nDunHk root@terraform
+        The key's randomart image is:
+        +---[RSA 2048]----+
+        |+ ..oB+          |
+        |.. .+.o          |
+        |o  o.+           |
+        | o+.oo. o.       |
+        |  ++o..+S.+      |
+        | +. o. +o= .     |
+        |o  . ..oo.+      |
+        |... o  +* oE     |
+        | o.  o. +B.      |
+        +----[SHA256]-----+
+        # ls -lrt /root/.ssh/
+        total 12
+        -rw-------. 1 root root  550 Jan 29 09:27 authorized_keys
+        -rw-------. 1 root root 1679 Feb 17 06:56 id_rsa
+        -rw-r--r--. 1 root root  396 Feb 17 06:56 id_rsa.pub
+
 #### Region
 Region at which OCI account is associated. You can find this information in the console easily
 
@@ -99,23 +130,6 @@ Region at which OCI account is associated. You can find this information in the 
 Open the navigation menu, under Identity you can find compartments. Click that. It will list all the compartments available with the account. Choose the compartment on which we need to create instance. That will show the compartment details including OCID as shown in the picture.
 ![Compartment](https://github.com/kmkittu/TerraformLB/blob/main/Compartment%20OCID.png)
 
-#### Example:
-
-        #tenancy and user information
-        tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaalxltbjsgjhukykkd6trlxdfbwjuulnavxqehvv3crknt7ewhlpa"
-        user_ocid = "ocid1.user.oc1..aaaaaaaaqidqcqnx6mfprmzt2nn6xudu3t4pgj4bbqlk23axlr4abbjbfyja"
-        fingerprint= "bf:0a:e6:c7:9c:93:d2:84:87:94:4f:fc:d4:24:ec:c1"
-        private_key_path = "/root/hol/oci_key.pem"
-
-        # Region
-        region = "us-ashburn-1"
-
-        # Compartment
-        compartment_ocid = "ocid1.compartment.oc1..aaaaaaaacd43nqpjqwl2tgg7rq5ysabiyxedffdfdhhghgq7swk426b5hnflyvpq"
-
-Private_key_path refers where we have kept private key to login into OCI portal.
-
-Instead of separate terraform.tfvars file we could specify these values directly in the main terraform files. 
 
 ### 2) Create the Terraform script  for OCI resources
 The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed. In this workshop we cover all the above attributes in the instance.tf file.
@@ -131,13 +145,17 @@ Edit the instance.tf file and modify the below lines with above attributes.
         default = "2f:80:77:4c:30:8c:5c:e7:d9:94:68:f3:db:3a:ab:25"
         }
         variable "private_key_path" {
-        default = "/root/.oci/oci_api_key.pem"  ===> Private key for OCI login credentials
+        default = "/root/.oci/oci_key.pem"  ===> Private key for OCI login credentials
         }
         variable "compartment_ocid" {
         default = "ocid1.compartment.oc1..aaaaaaaa4cffiat2knvzy4bjs7eprhns5qspej5pfcelkfvrb7s5vahgr4yq"
         }
         variable "region" {
         default = "ap-mumbai-1"
+        }
+
+        variable "ssh_authorized_keys" {
+        default = "/root/id_rsa.pub"  ==> id_rsa.pub key with its path
         }
 
 ### 3) Check the code integrity through Terraform plan command
@@ -180,7 +198,8 @@ It will show the list of Cloud resources to be created. That information gives a
             terraform apply "instance.out"
 
 You can refer the full output of plan command in the attached instanct.out file. In case any errors are thrown as part of Plan execution, that has to be addressed first before proceeding to execution.
-4) Execute the code through Terraform apply command
+
+### 4) Execute the code through Terraform apply command
 The terraform apply command is used to apply the changes required to reach the desired state of the configuration. The apply command will refer all the terraform scripts in the current folder and execute it in the appropriate order. Terraform knows which resource should be created first and it follows the predetermined order for resource creation. That’s where Terraform succeeds than Ansible. 
 
 
