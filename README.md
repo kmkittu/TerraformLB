@@ -90,8 +90,6 @@ You can also get the key's fingerprint with the following OpenSSL command. If yo
 
     openssl rsa -pubout -outform DER -in oci_key_public.pem | openssl md5 -c
 
-![Fingerprint](https://github.com/kmkittu/TerraformLB/blob/main/Add%20public%20Key%20-%20Fingerprint.png)
-
 ### SSH public key pair
 
 Create another set of SSH public key pair. This key will be used for compute instance SSH access. We will be specifying public key will creating the instance. Private key will be specified while connecting to the instance.
@@ -135,6 +133,7 @@ Open the navigation menu, under Identity you can find compartments. Click that. 
 The extracted Zip file has instance.tf which has the terraform script for creating VCN, Public Subnet and 2 compute web servers managed by Load Balancer. Place the instance.tf in the same folder where terraform.tfvars has been placed. In this workshop we cover all the above attributes in the instance.tf file.
 
 Edit the instance.tf file and modify the below lines with above attributes.
+
         variable "tenancy_ocid" {
         default = "ocid1.tenancy.oc1..aaaaaaaaasqft24cgqwb6lsyij3kmp4nsoiwyn5mboi23mzxywgppre2m6cq"
         }
