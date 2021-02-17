@@ -75,7 +75,7 @@ Login into OCI cloud consile, click user settings.
 
 In the page click API Key
 
-![api key](https://github.com/kmkittu/TerraformLB/blob/main/user%20settings.png)
+![api key](https://github.com/kmkittu/TerraformLB/blob/main/user%20API%20keys.png)
 
 Click "Add API Key" button. Paste the oci_key_public.pem there.
 
